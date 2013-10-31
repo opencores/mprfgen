@@ -2,10 +2,6 @@
 -- Title            : mprfgen (Multi-port register file generator)          --
 -- Author           : Nikolaos Kavvadias                                    --
 -- Copyright        : Nikolaos Kavvadias (C) 2007, 2008, 2009, 2010         --
--- Contact          : nikolaos.kavvadias@gmail.com                          --
---                  : nkavv@physics.auth.gr                                 --
---                  : nkavv@uop.gr                                          --
---                  : http://www.nkavvadias.co.cc                           --
 -- Release Date     : 07 October 2010                                       --
 -- Version          : 0.0.2                                                 --
 --------------------:---------------------------------------------------------
@@ -17,6 +13,10 @@
 --                  : Should work with ISE XST 12.3. Read-through added.    --
 ------------------------------------------------------------------------------
 
+0. NOTE
+
+This is a backup copy of the last free "mprfgen" version from SF.net.
+The original author removed the files from SF.net due to commercialization of his "new" version.
 
 1. INTRODUCTION
 
@@ -107,7 +107,7 @@ Running "make" should compile mprfgen.
     make
 
 
-6. CONTACT
+6. CONTACT (outdated)
 
 You may contact me at:
 

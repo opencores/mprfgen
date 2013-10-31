@@ -1,0 +1,117 @@
+------------------------------------------------------------------------------
+-- Title            : mprfgen (Multi-port register file generator)          --
+-- Author           : Nikolaos Kavvadias                                    --
+-- Copyright        : Nikolaos Kavvadias (C) 2007, 2008, 2009, 2010         --
+-- Contact          : nikolaos.kavvadias@gmail.com                          --
+--                  : nkavv@physics.auth.gr                                 --
+--                  : nkavv@uop.gr                                          --
+--                  : http://www.nkavvadias.co.cc                           --
+-- Release Date     : 07 October 2010                                       --
+-- Version          : 0.0.2                                                 --
+--------------------:---------------------------------------------------------
+-- Revision history :                                                       --
+--           v0.0.1 : 27-12-2007                                            --
+--                  : Initial release.                                      --
+--           v0.0.2 : 07-10-2010                                            --
+--                  : The first real update since the initial version.      --
+--                  : Should work with ISE XST 12.3. Read-through added.    --
+------------------------------------------------------------------------------
+
+
+1. INTRODUCTION
+
+"mprfgen" is a multi-port register file generator. It can either infer storage
+or instantiate block-RAM embedded memories for the Xilinx Spartan-3, Virtex-4,
+and Virtex-5 FPGAs.
+The generated memories are initialized to ZEROs. Also, when using RAM inference, 
+the following compilation/elaboration order should be used:
+  1. useful_functions_pkg.vhd
+  2. regfile_core.vhd
+  3. <your-generated-file>.vhd
+Please, note that the default read mode option (read-async) will generate 
+distributed RAM. For block RAM, use read-first, write-first or read-through, 
+instead.
+
+
+2. FILE LISTING
+
+  The mprfgen distributions includes the following files:
+
+  /mprfgen
+    COPYING, COPYING.LESSER
+      Description of the LGPL, version 3 license.
+    Makefile
+      Makefile for generating the mprfgen executable.
+    README
+      This file.
+    build-and-test.sh
+      Build "mprfgen" and generate the samples discussed in section 3.
+    mprfgen.c
+      The source code for the application.
+    regfile_core.vhd
+      Single-read, single-write port memory model used by the generated 
+      memories.
+    test1.vhd, test2.vhd, test3.vhd, test4.vhd
+      Sample files generated as shown in section 3.    
+    useful_functions_pkg.vhd
+      A VHDL package providing some utility functions.    
+
+
+3. MPRFGEN USAGE
+
+  The mprfgen program can be invoked with several options (see complete
+  options listing below). The usual tasks that can be accomplished with
+  mprfgen are:
+    - infer a multi-port register file for NWP write ports and NRP read ports
+    - instantiate a multi-port register file for Xilinx FPGAs
+
+  "mprfgen" can be invoked as:
+  $./mprfgen [options] <out.vhd>
+
+  The complete "mprfgen" options listing:
+
+    -h:           Print this help.
+    -infer:       Use generic RAM storage that can be inferred as block RAM(s).
+    -<read-mode>: Read mode supported by the generated RAM. Valid options:
+                  read-async, read-first, write-first, read-through}. 
+                  "read-through" cannot be used for block RAM instantiation.
+                  Default is "read-async"
+    -nwp <num>:   Number of write ports for the register file.
+    -nrp <num>:   Number of read ports for the register file.
+    -bw <num>:    Bitwidth for each memory entry.
+    -nregs <num>: Memory size (number of memory words).
+
+Here follow some simple usage examples of "mprfgen".
+
+1. Generate a 3-read, 2-write port generic register file.
+$ ./mprfgen -infer -nwp 2 -nrp 3 test1.vhd
+2. Generate a 1-read, 1-write port 32x2048 memory.
+$ ./mprfgen -infer -read-first -nwp 1 -nrp 1 -bw 32 -nregs 2048 test2.vhd
+3. Generate a 2-read, 1-write port LUT-based register file.
+$ ./mprfgen -read-async test3.vhd
+4. Generate a 2-read, 1-write port block RAM register file with direct 
+   instantiation.
+$ ./mprfgen -read-first test4.vhd
+
+
+4. INSTALLATION
+
+There exists a quite portable Makefile (Makefile in the current directory).
+Running "make" should compile mprfgen.
+
+
+5. PREREQUISITIES
+
+  - [mandatory for building] Standard UNIX-based tools
+    gcc (tested with gcc-3.3.3 and 3.4.3 on cygwin/x86)
+    make
+
+
+6. CONTACT
+
+You may contact me at:
+
+  Nikolaos Kavvadias <nikolaos.kavvadias@gmail.com>
+                     <nkavv@uop.gr>
+  http://www.nkavvadias.co.cc
+  http://electronics.physics.auth.gr/people/nkavv/
